@@ -2,10 +2,27 @@ let urls;
 let currentCh = 0;
 let player = $("audio#player")[0];
 let isPlaying = false;
+let hls = null;
 
 const play = (ch) => {
-  player.pause();
-  player.src = urls[ch];
+  if (!player.paused) player.pause();
+  if (hls) {
+    hls.destroy();
+    hls = null;
+  }
+
+  let isHLSPlaylist = urls[ch].split('.').pop().startsWith('m3u');
+	if (isHLSPlaylist && !player.canPlayType('application/vnd.apple.mpegurl')) {
+		if (Hls.isSupported()) {
+			hls = new Hls();
+			hls.loadSource(urls[ch]);
+			hls.attachMedia(player);
+		} else {
+			alert("Hls.js is not supported.");
+		}
+	} else {
+			player.src = urls[ch];
+	}
   $("span#ch-number").text(ch);
   player.play();
   $("button#play-pause").text("||");
@@ -32,7 +49,7 @@ $(() => {
       player.pause();
       isPlaying = false;
     } else {
-      if(urls.length < 1){ 
+      if(!urls || urls.length < 1){
         alert("no manifest");
         return;
       }
