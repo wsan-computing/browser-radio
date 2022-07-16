@@ -1,2 +1,2 @@
-# BrwoserRadio
+# BrowserRadio
 ブラウザで動くWebラジオプレイヤー
