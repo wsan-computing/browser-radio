@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrowserRadio</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+</head>
+<body>
+  <label for="input-manifest">manifest(.m3u)</label>
+  <input type="file" accept=".m3u" id="input-manifest">
+
+  <div id="manifests"></div>
+  <div id="radio">
+    <div id="ch-indicator"><span id="ch-number">X</span> ch</div>
+    <audio id="player">
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+    <div id="controler">
+      <button id="previous">&lt;&lt;</button>
+      <button id="play-pause">▶︎</button>
+      <button id="next">&gt;&gt;</button>
+    </div>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+  </div>
+
+  <script type="text/javascript" src="./script.js"></script>
+</body>
+</html>
