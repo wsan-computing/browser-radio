@@ -3,6 +3,15 @@ let currentCh = 0;
 let player = $("audio#player")[0];
 let isPlaying = false;
 
+const play = (ch) => {
+  player.pause();
+  player.src = urls[ch];
+  $("span#ch-number").text(ch);
+  player.play();
+  $("button#play-pause").text("||");
+  isPlaying = true;
+};
+
 $(() => {
   $("input#input-manifest").change(e => {
     let data = $(e.target).prop("files")[0];
@@ -27,28 +36,18 @@ $(() => {
         alert("no manifest");
         return;
       }
-      player.src = urls[currentCh];
-      $("span#ch-number").text(currentCh);
-      player.play();
-      $("button#play-pause").text("||");
-      isPlaying = true;
+      play(currentCh);
     }
   });
 
   $("button#previous").click(() => {
     currentCh = (currentCh - 1 < 0) ? urls.length - 1 : currentCh - 1;
-    player.pause();
-    player.src = urls[currentCh];
-    $("span#ch-number").text(currentCh);
-    player.play();
+    play(currentCh);
   });
 
   $("button#next").click(() => {
     currentCh = (currentCh + 1) % urls.length;
-    player.pause();
-    player.src = urls[currentCh];
-    $("span#ch-number").text(currentCh);
-    player.play();
+    play(currentCh);
   });
 
   $("input#volume").change(e => {
