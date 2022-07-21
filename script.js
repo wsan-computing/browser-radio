@@ -67,7 +67,7 @@ $(() => {
     play(currentCh);
   });
 
-  $("input#volume").change(e => {
+  $("input#volume").on("input", e => {
     player.volume = e.target.value;
   });
 });
