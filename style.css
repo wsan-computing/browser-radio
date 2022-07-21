@@ -1,3 +1,20 @@
+:root {
+  --main-text: #111111;
+  --main-bg: #EEEEEE;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --main-text: #DDDDDD;
+    --main-bg: #202020;
+  }
+}
+
+body {
+  color: var(--main-text);
+  background-color: var(--main-bg);
+}
+
 span#ch-number {
   font-size: xx-large;
 }
