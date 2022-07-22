@@ -38,6 +38,15 @@ const logTime = () => {
   return h + ':' + m + ':' + s + '.' + ms;
 }
 
+const addLog = (event, description) => {
+  console.log(event);
+  console.log(event.originalEvent.isTrusted)
+  description = event.originalEvent.isTrusted
+            ? description + " trusted."
+            : description + " NOT trusted.";
+  $("textarea#log").val($("textarea#log").val() + logTime() + " " + description + "\n");
+}
+
 $(() => {
   $("input#input-manifest").change(e => {
     let data = $(e.target).prop("files")[0];
@@ -81,14 +90,14 @@ $(() => {
   });
 
   $(player).on({
-    play: () =>  $("textarea#log").val($("textarea#log").val() + logTime() + " player started.\n"),
-    pause: () => $("textarea#log").val($("textarea#log").val() + logTime() + " player paused.\n"),
-    ended: () => $("textarea#log").val($("textarea#log").val() + logTime() + " player ended.\n"),
-    error: () => $("textarea#log").val($("textarea#log").val() + logTime() + " something error occured.\n"),
-    abort: () => $("textarea#log").val($("textarea#log").val() + logTime() + " aborted.\n"),
-    stalled: () => $("textarea#log").val($("textarea#log").val() + logTime() + " stalled.\n"),
-    suspend: () => $("textarea#log").val($("textarea#log").val() + logTime() + " suspended.\n"),
-    waiting: () => $("textarea#log").val($("textarea#log").val() + logTime() + " waiting...\n"),
-    emptied: () => $("textarea#log").val($("textarea#log").val() + logTime() + " emptied.\n"),
+    play:  (e) => addLog(e, "player started."),
+    pause: (e) => addLog(e, "player paused."),
+    ended: (e) => addLog(e, "player ended."),
+    error: (e) => addLog(e, "something error occured."),
+    abort: (e) => addLog(e, "aborted."),
+    stalled: (e) => addLog(e, "stalled."),
+    suspend: (e) => addLog(e, "suspended."),
+    waiting: (e) => addLog(e, "waiting..."),
+    emptied: (e) => addLog(e, "emptied."),
 	});
 });
