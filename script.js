@@ -39,7 +39,7 @@ $(() => {
       urls = reader.result
                   .replace(/\r/g, '')
                   .split(/\n/g)
-									.filter((val) => {return val.length > 0 && val[0] != '#';});  // 空行とコメント(#から始まる)を削除
+                  .filter((val) => {return val.length > 0 && val[0] != '#';});  // 空行とコメント(#から始まる)を削除
     }
   });
 
