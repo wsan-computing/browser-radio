@@ -29,6 +29,15 @@ const play = (ch) => {
   isPlaying = true;
 };
 
+const logTime = () => {
+  let now = new Date();
+  let h = now.getHours();
+  let m = now.getMinutes();
+  let s = now.getSeconds();
+  let ms = now.getMilliseconds();
+  return h + ':' + m + ':' + s + '.' + ms;
+}
+
 $(() => {
   $("input#input-manifest").change(e => {
     let data = $(e.target).prop("files")[0];
@@ -70,4 +79,16 @@ $(() => {
   $("input#volume").on("input", e => {
     player.volume = e.target.value;
   });
+
+  $(player).on({
+    play: () =>  $("textarea#log").val($("textarea#log").val() + logTime() + " player started.\n"),
+    pause: () => $("textarea#log").val($("textarea#log").val() + logTime() + " player paused.\n"),
+    ended: () => $("textarea#log").val($("textarea#log").val() + logTime() + " player ended.\n"),
+    error: () => $("textarea#log").val($("textarea#log").val() + logTime() + " something error occured.\n"),
+    abort: () => $("textarea#log").val($("textarea#log").val() + logTime() + " aborted.\n"),
+    stalled: () => $("textarea#log").val($("textarea#log").val() + logTime() + " stalled.\n"),
+    suspend: () => $("textarea#log").val($("textarea#log").val() + logTime() + " suspended.\n"),
+    waiting: () => $("textarea#log").val($("textarea#log").val() + logTime() + " waiting...\n"),
+    emptied: () => $("textarea#log").val($("textarea#log").val() + logTime() + " emptied.\n"),
+	});
 });

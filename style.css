@@ -18,3 +18,8 @@ body {
 span#ch-number {
   font-size: xx-large;
 }
+
+textarea.form-elem {
+  background: #CCCCCC;
+  width: 20em;
+}
