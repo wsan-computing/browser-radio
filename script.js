@@ -25,7 +25,6 @@ const play = (ch) => {
 	}
   $("span#ch-number").text(ch);
   player.play();
-  $("button#play-pause").text("||");
   isPlaying = true;
 };
 
@@ -45,7 +44,6 @@ $(() => {
 
   $("button#play-pause").click(() => {
     if(isPlaying) {
-      $("button#play-pause").text("▶︎");
       player.pause();
       isPlaying = false;
     } else {
@@ -70,4 +68,10 @@ $(() => {
   $("input#volume").on("input", e => {
     player.volume = e.target.value;
   });
+
+  $(player).on({
+    play:  (e) => $("button#play-pause").text("||"),
+    pause: (e) => $("button#play-pause").text("▶︎"),
+    ended: (e) => $("button#play-pause").text("▶︎"),
+	});
 });
