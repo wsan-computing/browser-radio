@@ -70,8 +70,8 @@ $(() => {
   });
 
   $(player).on({
-    play:  (e) => $("button#play-pause").text("||"),
-    pause: (e) => $("button#play-pause").text("▶︎"),
-    ended: (e) => $("button#play-pause").text("▶︎"),
+    play:  () => $("button#play-pause").text("||"),
+    pause: () => $("button#play-pause").text("▶︎"),
+    ended: () => $("button#play-pause").text("▶︎"),
 	});
 });
