@@ -6,15 +6,29 @@
   <title>BrowserRadio</title>
   <link rel="shortcut icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
   <link rel="manifest" href="manifest.webmanifest">
 </head>
-<body>
-  <label for="input-manifest">manifest(.m3u)</label>
-  <input type="file" accept=".m3u" id="input-manifest">
+<body class="drawer drawer--left">
+  <header role="banner">
+    <button type="button" class="drawer-toggle drawer-hamburger">
+      <span class="sr-only">toggle navigation</span>
+      <span class="drawer-hamburger-icon"></span>
+    </button>
+    <nav class="drawer-nav" role="navigation">
+      <label for="input-manifest">manifest(.m3u)</label>
+      <input type="file" accept=".m3u" id="input-manifest">
+      <ul class="drawer-menu" id="manifests">
+        <li><a class="drawer-brand" href="#">Channels</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <div id="manifests"></div>
+  <main role="main">
   <div id="radio">
     <div id="ch-indicator"><span id="ch-number">X</span> ch</div>
     <audio id="player">
@@ -28,6 +42,7 @@
     </div>
     <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
   </div>
+  </main>
 
   <script type="text/javascript" src="./script.js"></script>
 </body>

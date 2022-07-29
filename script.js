@@ -30,8 +30,11 @@ const play = (ch) => {
 
 $(() => {
   $("input#input-manifest").change(e => {
-    let data = $(e.target).prop("files")[0];
+    if (urls != undefined) {
+      $("span.drawer-menu-item").remove();
+    }
 
+    let data = $(e.target).prop("files")[0];
     let reader = new FileReader();
 		reader.readAsText(data);
 		reader.onload = function (){
@@ -39,6 +42,12 @@ $(() => {
                   .replace(/\r/g, '')
                   .split(/\n/g)
                   .filter((val) => {return val.length > 0 && val[0] != '#';});  // 空行とコメント(#から始まる)を削除
+      for (let i = 0; i < urls.length; i++) {
+        let url = urls[i];
+        let li = document.createElement('li');
+        li.innerHTML = `<span class="drawer-menu-item" onclick="play(${i})">${url}</span>`;
+        $("ul#manifests").append(li);
+      }
     }
   });
 
@@ -74,4 +83,8 @@ $(() => {
     pause: () => $("button#play-pause").text("▶︎"),
     ended: () => $("button#play-pause").text("▶︎"),
 	});
+
+  $(document).ready(function() {
+    $('.drawer').drawer();
+  });
 });
