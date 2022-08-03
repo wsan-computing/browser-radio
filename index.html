@@ -11,10 +11,14 @@
   <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
-  <label for="input-manifest">manifest(.m3u)</label>
-  <input type="file" accept=".m3u" id="input-manifest">
+  <button id="channels">CHs</button>
+  <div id="manifests" class="anim-box anim-box slidein is-animated">
+    <label for="input-manifest">manifest(.m3u)</label>
+    <input type="file" accept=".m3u" id="input-manifest">
+    <ul id="manifests">
+    </ul>
+  </div>
 
-  <div id="manifests"></div>
   <div id="radio">
     <div id="ch-indicator"><span id="ch-number">X</span> ch</div>
     <audio id="player">

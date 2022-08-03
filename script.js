@@ -11,6 +11,8 @@ const play = (ch) => {
     hls = null;
   }
 
+  currentCh = ch;
+
   let isHLSPlaylist = urls[ch].split('.').pop().startsWith('m3u');
 	if (isHLSPlaylist && !player.canPlayType('application/vnd.apple.mpegurl')) {
 		if (Hls.isSupported()) {
@@ -30,8 +32,11 @@ const play = (ch) => {
 
 $(() => {
   $("input#input-manifest").change(e => {
-    let data = $(e.target).prop("files")[0];
+    if (urls != undefined) {
+      $("li.manifest-item").remove();
+    }
 
+    let data = $(e.target).prop("files")[0];
     let reader = new FileReader();
 		reader.readAsText(data);
 		reader.onload = function (){
@@ -39,6 +44,15 @@ $(() => {
                   .replace(/\r/g, '')
                   .split(/\n/g)
                   .filter((val) => {return val.length > 0 && val[0] != '#';});  // 空行とコメント(#から始まる)を削除
+      for (let i = 0; i < urls.length; i++) {
+        let url = urls[i];
+        let li = $('<li>', {
+          class: 'manifest-item',
+          onclick: `play(${i})`,
+          text: `${i}ch ${url}`
+        });
+        $("ul#manifests").append(li);
+      }
     }
   });
 
@@ -65,6 +79,14 @@ $(() => {
     play(currentCh);
   });
 
+  $("button#channels").click(() => {
+    if ($("div#manifests").css("display") == "none") {
+      $("div#manifests").show();
+    } else {
+      $("div#manifests").hide();
+    }
+  });
+
   $("input#volume").on("input", e => {
     player.volume = e.target.value;
   });
@@ -74,4 +96,6 @@ $(() => {
     pause: () => $("button#play-pause").text("▶︎"),
     ended: () => $("button#play-pause").text("▶︎"),
 	});
+
+  $("div#manifests").hide();
 });

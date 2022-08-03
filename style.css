@@ -12,9 +12,40 @@
 
 body {
   color: var(--main-text);
-  background-color: var(--main-bg);
+  /*background-color: var(--main-bg);*/
+  background: linear-gradient(to right, #362ae0 0%, #3b79cc 50%, #42d3ed 100%);
 }
 
 span#ch-number {
   font-size: xx-large;
+}
+
+div#radio {
+  z-index: 1;
+}
+
+.anim-box {
+  background-color: var(--main-bg);
+  width: 90vw;
+  height: 90vh;
+  position: fixed;
+  z-index: 2;
+  overflow: auto;
+}
+
+.anim-box.slidein.is-animated {
+  animation: slideIn 1s cubic-bezier(0.25, 1, 0.5, 1) 1 forwards;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(180px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+  }
+  40%, 100% {
+    opacity: 1;
+  }
 }
