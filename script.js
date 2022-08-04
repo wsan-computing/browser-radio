@@ -12,6 +12,8 @@ const play = (ch) => {
   }
 
   currentCh = ch;
+  $("li.manifest-item").removeClass("selected");
+  $(`li#${currentCh}ch`).addClass("selected");
 
   let isHLSPlaylist = urls[ch].split('.').pop().startsWith('m3u');
 	if (isHLSPlaylist && !player.canPlayType('application/vnd.apple.mpegurl')) {
@@ -47,6 +49,7 @@ $(() => {
       for (let i = 0; i < urls.length; i++) {
         let url = urls[i];
         let li = $('<li>', {
+          id: `${i}ch`,
           class: 'manifest-item',
           onclick: `play(${i})`,
           text: `${i}ch ${url}`
@@ -85,6 +88,10 @@ $(() => {
     } else {
       $("div#manifests").hide();
     }
+  });
+
+  $("button#hide-channels").click(() => {
+    $("div#manifests").hide();
   });
 
   $("input#volume").on("input", e => {

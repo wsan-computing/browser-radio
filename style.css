@@ -24,22 +24,33 @@ div#radio {
   z-index: 1;
 }
 
+ul {
+  list-style: none;
+}
+
+li.manifest-item.selected {
+  background-color: #3b79cc;
+  color: #EEEEEE;
+}
+
 .anim-box {
-  background-color: var(--main-bg);
-  width: 90vw;
-  height: 90vh;
+  /*background-color: var(--main-bg);*/
+  background: rgba(100, 100, 100, .8);
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
   position: fixed;
   z-index: 2;
+  padding: 1em;
   overflow: auto;
 }
 
-.anim-box.slidein.is-animated {
+.anim-box.slidein {
   animation: slideIn 1s cubic-bezier(0.25, 1, 0.5, 1) 1 forwards;
 }
 
 @keyframes slideIn {
   0% {
-    transform: translateX(180px);
+    transform: translateX(-100vw);
     opacity: 0;
   }
   100% {
