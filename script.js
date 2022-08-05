@@ -83,15 +83,23 @@ $(() => {
   });
 
   $("button#channels").click(() => {
+    let manifests = $("div#manifests");
+    manifests.removeClass("init");
+    manifests.removeClass("slideout");
+    manifests.addClass("slidein");
+    /*
     if ($("div#manifests").css("display") == "none") {
       $("div#manifests").show();
     } else {
       $("div#manifests").hide();
     }
+    */
   });
 
   $("button#hide-channels").click(() => {
-    $("div#manifests").hide();
+    $("div#manifests").removeClass("slidein");
+    $("div#manifests").addClass("slideout");
+    //$("div#manifests").hide();
   });
 
   $("input#volume").on("input", e => {
@@ -104,5 +112,5 @@ $(() => {
     ended: () => $("button#play-pause").text("▶︎"),
 	});
 
-  $("div#manifests").hide();
+  //$("div#manifests").hide();
 });
