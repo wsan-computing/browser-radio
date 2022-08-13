@@ -12,8 +12,8 @@ const play = (ch) => {
   }
 
   currentCh = ch;
-  $("li.manifest-item").removeClass("selected");
-  $(`li#${currentCh}ch`).addClass("selected");
+  $("div.manifest-item").removeClass("selected");
+  $(`div#${currentCh}ch`).addClass("selected");
 
   let isHLSPlaylist = urls[ch].split('.').pop().startsWith('m3u');
 	if (isHLSPlaylist && !player.canPlayType('application/vnd.apple.mpegurl')) {
@@ -35,7 +35,7 @@ const play = (ch) => {
 $(() => {
   $("input#input-manifest").change(e => {
     if (urls != undefined) {
-      $("li.manifest-item").remove();
+      $("div.manifest-item").remove();
     }
 
     let data = $(e.target).prop("files")[0];
@@ -48,13 +48,13 @@ $(() => {
                   .filter((val) => {return val.length > 0 && val[0] != '#';});  // 空行とコメント(#から始まる)を削除
       for (let i = 0; i < urls.length; i++) {
         let url = urls[i];
-        let li = $('<li>', {
+        let item = $('<div>', {
           id: `${i}ch`,
           class: 'manifest-item',
           onclick: `play(${i})`,
           text: `${i}ch ${url}`
         });
-        $("ul#manifests").append(li);
+        $("div#manifests").append(item);
       }
     }
   });
@@ -83,25 +83,22 @@ $(() => {
   });
 
   $("button#channels").click(() => {
-    let manifests = $("div#manifests");
-    manifests.removeClass("init");
-    manifests.removeClass("slideout");
-    manifests.addClass("slidein");
-    /*
-    if ($("div#manifests").css("display") == "none") {
-      $("div#manifests").show();
+    let chMenu = $("div#ch-menu");
+    if (chMenu.hasClass("init") || chMenu.hasClass("slideout")) {
+      chMenu.removeClass("init");
+      chMenu.removeClass("slideout");
+      chMenu.addClass("slidein");
     } else {
-      $("div#manifests").hide();
+      chMenu.removeClass("slidein");
+      chMenu.addClass("slideout");
     }
-    */
   });
-
+  /*
   $("button#hide-channels").click(() => {
-    $("div#manifests").removeClass("slidein");
-    $("div#manifests").addClass("slideout");
-    //$("div#manifests").hide();
+    $("div#chMenu").removeClass("slidein");
+    $("div#chMenu").addClass("slideout");
   });
-
+  */
   $("input#volume").on("input", e => {
     player.volume = e.target.value;
   });
@@ -112,5 +109,4 @@ $(() => {
     ended: () => $("button#play-pause").text("▶︎"),
 	});
 
-  //$("div#manifests").hide();
 });
