@@ -82,7 +82,8 @@ $(() => {
     play(currentCh);
   });
 
-  $("button#channels").click(() => {
+  $("div#channels").click(() => {
+    $("div#channels").toggleClass('active');
     let chMenu = $("div#ch-menu");
     if (chMenu.hasClass("init") || chMenu.hasClass("slideout")) {
       chMenu.removeClass("init");
