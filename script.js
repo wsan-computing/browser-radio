@@ -77,7 +77,17 @@ $(() => {
     play(currentCh);
   });
 
+  $("img#prev-svg").click(() => {
+    currentCh = (currentCh - 1 < 0) ? urls.length - 1 : currentCh - 1;
+    play(currentCh);
+  });
+
   $("button#next").click(() => {
+    currentCh = (currentCh + 1) % urls.length;
+    play(currentCh);
+  });
+
+  $("img#next-svg").click(() => {
     currentCh = (currentCh + 1) % urls.length;
     play(currentCh);
   });

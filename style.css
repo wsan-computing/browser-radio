@@ -21,7 +21,23 @@ div#radio {
 }
 
 span#ch-number {
-  font-size: xx-large;
+  /*font-size: xx-large;*/
+  color: #EEEEEE;
+  font-size: 5em;
+}
+
+.control-svg {
+  cursor: pointer;
+  height: 5em;
+}
+
+#prev-svg {
+  padding: 0em 1em 0em 0em;
+}
+
+#next-svg {
+  padding: 0em 1em 0em 0em;
+  transform: scale(-1, 1);
 }
 
 div#radio {
