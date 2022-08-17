@@ -12,8 +12,8 @@
 
 body {
   color: var(--main-text);
-  /*background-color: var(--main-bg);*/
-  background: linear-gradient(to right, #362ae0 0%, #3b79cc 50%, #42d3ed 100%);
+  background-color: var(--main-bg);
+  /*background: linear-gradient(to right, #362ae0 0%, #3b79cc 50%, #42d3ed 100%);*/
 }
 
 div#controler {
@@ -46,6 +46,14 @@ span#ch-number {
   font-size: 15vmin;
 }
 
+span#ch-text {
+  font-size: 5vmin; 
+}
+
+input#volume {
+  width: 15vmin;
+}
+
 div#radio {
   z-index: 1;
 }
@@ -60,7 +68,6 @@ div#manifests {
 
 div.manifest-item.selected {
   background-color: #3b79cc;
-  color: #EEEEEE;
 }
 
 .anim-box {
@@ -74,6 +81,7 @@ div.manifest-item.selected {
   padding: 1em 1em 0em 4em;
   overflow-x: hidden;
   overflow-y: auto;
+  color: #EEEEEE;
 }
 
 .anim-box.init {
