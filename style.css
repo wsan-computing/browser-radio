@@ -52,6 +52,7 @@ span#ch-text {
 
 input#volume {
   width: 15vmin;
+  -webkit-appearance: slider-vertical;
 }
 
 div#radio {
