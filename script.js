@@ -4,6 +4,32 @@ let player = $("audio#player")[0];
 let isPlaying = false;
 let hls = null;
 
+// https://developer.mozilla.org/ja/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+const  storageAvailable = (type) => {
+  var storage;
+  try {
+    storage = window[type];
+    var x = '__storage_test__';
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  }
+  catch (e) {
+    return e instanceof DOMException && (
+      // everything except Firefox
+      e.code === 22 ||
+      // Firefox
+      e.code === 1014 ||
+      // test name field too, because code might not be present
+      // everything except Firefox
+      e.name === 'QuotaExceededError' ||
+      // Firefox
+      e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+      // acknowledge QuotaExceededError only if there's something already stored
+      (storage && storage.length !== 0);
+  }
+}
+
 const play = (ch) => {
   if (!player.paused) player.pause();
   if (hls) {
@@ -30,11 +56,37 @@ const play = (ch) => {
   $("span#ch-number").text(ch);
   player.play();
   isPlaying = true;
+  localStorage.setItem('ch', ch);
 };
 
 $(() => {
+  if (storageAvailable('localStorage')) {
+    console.log('localStorage is available.');
+
+    player.volume = (localStorage.getItem('volume') == null) ? 1 : localStorage.getItem('volume');
+    $("input#volume").val(player.volume);
+    
+    let i = 0;
+    if (localStorage.getItem(0) != null) {
+      do {
+        let url = localStorage.getItem(i);
+        let item = $('<div>', {
+          id: `${i}ch`,
+          class: 'manifest-item',
+          onclick: `play(${i})`,
+          text: `${i}ch ${url}`
+        });
+        $("div#manifests").append(item);
+        i++;
+      } while (localStorage.getItem(i) != null);
+    }
+  } else {
+    console.log('localStorage is unavailable.');
+  }
+
   $("input#input-manifest").change(e => {
     if (urls != undefined) {
+      localStorage.clear();
       $("div.manifest-item").remove();
     }
     $("button#previous").prop('disabled', false);
@@ -50,6 +102,7 @@ $(() => {
                   .filter((val) => {return val.length > 0 && val[0] != '#';});  // 空行とコメント(#から始まる)を削除
       for (let i = 0; i < urls.length; i++) {
         let url = urls[i];
+        localStorage.setItem(i, url);
         let item = $('<div>', {
           id: `${i}ch`,
           class: 'manifest-item',
@@ -104,6 +157,7 @@ $(() => {
   */
   $("input#volume").on("input", e => {
     player.volume = e.target.value;
+    localStorage.setItem('volume', e.target.value);
   });
 
   $(player).on({
