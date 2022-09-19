@@ -37,6 +37,8 @@ $(() => {
     if (urls != undefined) {
       $("div.manifest-item").remove();
     }
+    $("button#previous").prop('disabled', false);
+    $("button#next").prop('disabled', false);
 
     let data = $(e.target).prop("files")[0];
     let reader = new FileReader();
@@ -110,4 +112,6 @@ $(() => {
     ended: () => $("button#play-pause").text("▶︎"),
 	});
 
+  $("button#previous").prop('disabled', true);
+  $("button#next").prop('disabled', true);
 });
