@@ -1,5 +1,5 @@
-let urls;
-let currentCh = 0;
+let urls = [];
+let currentCh;
 let player = $("audio#player")[0];
 let isPlaying = false;
 let hls = null;
@@ -63,11 +63,17 @@ $(() => {
   if (storageAvailable('localStorage')) {
     console.log('localStorage is available.');
 
-    player.volume = (localStorage.getItem('volume') == null) ? 1 : localStorage.getItem('volume');
+    let ch = localStorage.getItem('ch');
+    let volume = localStorage.getItem('volume');
+
+    currentCh = (ch == null) ? 0 : ch;
+    if(ch != null) $("span#ch-number").text(ch);
+    player.volume = (volume == null) ? 1 : volume;
     $("input#volume").val(player.volume);
     
     let i = 0;
     if (localStorage.getItem(0) != null) {
+      urls = [];
       do {
         let url = localStorage.getItem(i);
         let item = $('<div>', {
@@ -77,6 +83,7 @@ $(() => {
           text: `${i}ch ${url}`
         });
         $("div#manifests").append(item);
+        urls[i] = url;
         i++;
       } while (localStorage.getItem(i) != null);
     }
@@ -166,6 +173,8 @@ $(() => {
     ended: () => $("button#play-pause").text("▶︎"),
 	});
 
-  $("button#previous").prop('disabled', true);
-  $("button#next").prop('disabled', true);
+  if(urls.length <= 0) {
+    $("button#previous").prop('disabled', true);
+    $("button#next").prop('disabled', true);
+  }
 });
