@@ -1,4 +1,4 @@
-let urls = [];
+let channels = {};
 let currentCh;
 let player = $("audio#player")[0];
 let isPlaying = false;
@@ -41,60 +41,69 @@ const play = (ch) => {
   $("div.manifest-item").removeClass("selected");
   $(`div#${currentCh}ch`).addClass("selected");
 
-  let isHLSPlaylist = urls[ch].split('.').pop().startsWith('m3u');
+  let isHLSPlaylist = channels[ch].split('.').pop().startsWith('m3u');
 	if (isHLSPlaylist && !player.canPlayType('application/vnd.apple.mpegurl')) {
 		if (Hls.isSupported()) {
 			hls = new Hls();
-			hls.loadSource(urls[ch]);
+			hls.loadSource(channels[ch]);
 			hls.attachMedia(player);
 		} else {
 			alert("Hls.js is not supported.");
 		}
 	} else {
-			player.src = urls[ch];
+			player.src = channels[ch];
 	}
   $("span#ch-number").text(ch);
   player.play();
   isPlaying = true;
-  localStorage.setItem('ch', ch);
+  localStorage.setItem('browser-radio-current-ch', ch);
 };
 
 $(() => {
   if (storageAvailable('localStorage')) {
     console.log('localStorage is available.');
 
-    let ch = localStorage.getItem('ch');
-    let volume = localStorage.getItem('volume');
+    let ch = localStorage.getItem('browser-radio-current-ch');
+    let volume = localStorage.getItem('browser-radio-volume');
 
     currentCh = (ch == null) ? 0 : ch;
     if(ch != null) $("span#ch-number").text(ch);
     player.volume = (volume == null) ? 1 : volume;
     $("input#volume").val(player.volume);
-    
-    let i = 0;
-    if (localStorage.getItem(0) != null) {
-      urls = [];
-      do {
-        let url = localStorage.getItem(i);
+
+    try {
+      let channelsJsonString = localStorage.getItem('browser-radio-channels');
+      if (!channelsJsonString) throw 'ChannelsYetDefinedError';
+      channels = JSON.parse(localStorage.getItem('browser-radio-channels'));
+      Object.keys(channels).forEach(i => {
         let item = $('<div>', {
           id: `${i}ch`,
           class: 'manifest-item',
           onclick: `play(${i})`,
-          text: `${i}ch ${url}`
+          text: `${i}ch ${channels[i]}`
         });
         $("div#manifests").append(item);
-        urls[i] = url;
-        i++;
-      } while (localStorage.getItem(i) != null);
+      });
+    } catch (e) {
+      if (e == 'ChannelsYetDefinedError') {
+        console.log("No channels registered yet.");
+      } else {
+        console.log(e);
+        console.log("An error occured during JSON parsing.");
+      }
     }
   } else {
     console.log('localStorage is unavailable.');
   }
 
   $("input#input-manifest").change(e => {
-    if (urls != undefined) {
-      localStorage.clear();
+    if (Object.keys(channels).length) {
+      localStorage.removeItem('browser-radio-current-ch');
+      localStorage.removeItem('browser-radio-channels')
       $("div.manifest-item").remove();
+      currentCh = 0;
+      channels = {};
+      $("span#ch-number").text(currentCh);
     }
     $("button#previous").prop('disabled', false);
     $("button#next").prop('disabled', false);
@@ -102,14 +111,13 @@ $(() => {
     let data = $(e.target).prop("files")[0];
     let reader = new FileReader();
 		reader.readAsText(data);
-		reader.onload = function (){
-      urls = reader.result
+		reader.onload = () => {
+      let urls = reader.result
                   .replace(/\r/g, '')
                   .split(/\n/g)
                   .filter((val) => {return val.length > 0 && val[0] != '#';});  // 空行とコメント(#から始まる)を削除
       for (let i = 0; i < urls.length; i++) {
-        let url = urls[i];
-        localStorage.setItem(i, url);
+        let url = channels[i] = urls[i];
         let item = $('<div>', {
           id: `${i}ch`,
           class: 'manifest-item',
@@ -118,6 +126,7 @@ $(() => {
         });
         $("div#manifests").append(item);
       }
+      localStorage.setItem('browser-radio-channels', JSON.stringify(channels));
     }
   });
 
@@ -126,7 +135,7 @@ $(() => {
       player.pause();
       isPlaying = false;
     } else {
-      if(!urls || urls.length < 1){
+      if(Object.keys(channels).length < 1){
         alert("no manifest");
         return;
       }
@@ -135,12 +144,12 @@ $(() => {
   });
 
   $("button#previous").click(() => {
-    currentCh = (currentCh - 1 < 0) ? urls.length - 1 : currentCh - 1;
+    currentCh = (currentCh - 1 < 0) ? Object.keys(channels).length - 1 : currentCh - 1;
     play(currentCh);
   });
 
   $("button#next").click(() => {
-    currentCh = (currentCh + 1) % urls.length;
+    currentCh = (currentCh + 1) % Object.keys(channels).length;
     play(currentCh);
   });
 
@@ -164,7 +173,7 @@ $(() => {
   */
   $("input#volume").on("input", e => {
     player.volume = e.target.value;
-    localStorage.setItem('volume', e.target.value);
+    localStorage.setItem('browser-radio-volume', e.target.value);
   });
 
   $(player).on({
@@ -173,7 +182,7 @@ $(() => {
     ended: () => $("button#play-pause").text("▶︎"),
 	});
 
-  if(urls.length <= 0) {
+  if (Object.keys(channels).length <= 0) {
     $("button#previous").prop('disabled', true);
     $("button#next").prop('disabled', true);
   }
