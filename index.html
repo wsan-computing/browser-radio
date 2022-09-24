@@ -11,22 +11,28 @@
   <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
-  <label for="input-manifest">manifest(.m3u)</label>
-  <input type="file" accept=".m3u" id="input-manifest">
+  <div id="ch-menu" class="anim-box init">
+    <!--<button id="hide-channels">×</button><br>-->
+    <label for="input-manifest">manifest(.m3u)</label>
+    <input type="file" accept=".m3u" id="input-manifest">
+    <div id="manifests"></div>
+  </div>
 
-  <div id="manifests"></div>
+  <div id="channels" class="openbtn"><span></span><span>Ch</span><span></span></div>
   <div id="radio">
-    <div id="ch-indicator"><span id="ch-number">X</span> ch</div>
+    <div id="controler">
+      <button id="previous" class="changebtn">&lt;&lt;</button>
+      <div id="indicator">
+        <div id="ch-indicator"><span id="ch-number">X</span> <span id="ch-text">ch</span></div>
+        <button id="play-pause">▶︎</button><br/>
+        <input type="range" id="volume" min="0" max="1" step="0.01" value="1" orient="vertical">
+      </div>
+      <button id="next" class="changebtn">&gt;&gt;</button>
+    </div>
     <audio id="player">
       Your browser does not support the
       <code>audio</code> element.
     </audio>
-    <div id="controler">
-      <button id="previous">&lt;&lt;</button>
-      <button id="play-pause">▶︎</button>
-      <button id="next">&gt;&gt;</button>
-    </div>
-    <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
   </div>
 
   <script type="text/javascript" src="./script.js"></script>
