@@ -66,7 +66,7 @@ $(() => {
     let ch = localStorage.getItem('browser-radio-current-ch');
     let volume = localStorage.getItem('browser-radio-volume');
 
-    currentCh = (ch == null) ? 0 : ch;
+    currentCh = (ch == null) ? 0 : parseInt(ch, 10);
     if(ch != null) $("span#ch-number").text(ch);
     player.volume = (volume == null) ? 1 : volume;
     $("input#volume").val(player.volume);
