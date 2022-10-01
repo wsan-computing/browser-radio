@@ -96,6 +96,34 @@ $(() => {
     console.log('localStorage is unavailable.');
   }
 
+  $(document).keydown(e => {
+    // console.log(e.keyCode);
+    switch (e.keyCode) {
+      case 37:
+        // console.log("←");
+        $("button#previous").click();
+        break;
+      case 38:
+        // console.log("↑");
+        player.volume = (player.volume > 0.95) ? 1 : player.volume + 0.05;
+        localStorage.setItem('browser-radio-volume', player.volume);
+        $("input#volume").val(player.volume);
+        break;
+      case 39:
+        // console.log("→");
+        $("button#next").click();
+        break;
+      case 40:
+        // console.log("↓");
+        player.volume = (player.volume < 0.05) ? 0 : player.volume - 0.05;
+        localStorage.setItem('browser-radio-volume', player.volume);
+        $("input#volume").val(player.volume);
+        break;
+      default:
+        break;
+    }
+  });
+
   $("input#input-manifest").change(e => {
     if (Object.keys(channels).length) {
       localStorage.removeItem('browser-radio-current-ch');
