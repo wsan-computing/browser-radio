@@ -96,6 +96,13 @@ $(() => {
     console.log('localStorage is unavailable.');
   }
 
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('play', () => { console.log('play'); $("button#play-pause").click(); });
+    navigator.mediaSession.setActionHandler('pause', () => { console.log('pause'); $("button#play-pause").click(); });
+    navigator.mediaSession.setActionHandler('previoustrack', () => { console.log('previoustrack'); $("button#previous").click(); });
+    navigator.mediaSession.setActionHandler('nexttrack', () => { console.log('nexttrack'); $("button#next").click(); });
+  }
+
   $(document).keydown(e => {
     // console.log(e.keyCode);
     switch (e.keyCode) {
