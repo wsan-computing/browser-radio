@@ -57,6 +57,14 @@ const play = (ch) => {
   player.play();
   isPlaying = true;
   localStorage.setItem('browser-radio-current-ch', ch);
+
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: `${ch}ch`,
+      artist: channels[ch].replace("https://", "").replace("http://", ""),
+      album: channels[ch].replace("https://", "").replace("http://", "")
+    });
+  }
 };
 
 $(() => {
@@ -94,6 +102,13 @@ $(() => {
     }
   } else {
     console.log('localStorage is unavailable.');
+  }
+
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('play', () => { console.log('play'); $("button#play-pause").click(); });
+    navigator.mediaSession.setActionHandler('pause', () => { console.log('pause'); $("button#play-pause").click(); });
+    navigator.mediaSession.setActionHandler('previoustrack', () => { console.log('previoustrack'); $("button#previous").click(); });
+    navigator.mediaSession.setActionHandler('nexttrack', () => { console.log('nexttrack'); $("button#next").click(); });
   }
 
   $(document).keydown(e => {
