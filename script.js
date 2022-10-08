@@ -57,6 +57,14 @@ const play = (ch) => {
   player.play();
   isPlaying = true;
   localStorage.setItem('browser-radio-current-ch', ch);
+
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: `${ch}ch`,
+      artist: channels[ch].replace("https://", "").replace("http://", ""),
+      album: channels[ch].replace("https://", "").replace("http://", "")
+    });
+  }
 };
 
 $(() => {
